@@ -1,0 +1,237 @@
+:root {
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-main: #333;
+    --text-sub: #666;
+    
+    /* Emotion Colors */
+    --c-neutral: #dfe6e9;
+    --c-weak: #ff7675;   /* Redish */
+    --c-sad: #fdcb6e;    /* Orange */
+    --c-ok: #74b9ff;     /* Blue */
+    --c-good: #55efc4;   /* Green */
+    --c-strong: #00b894; /* Deep Green */
+    
+    --transition-speed: 0.4s;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+body {
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color var(--transition-speed);
+}
+
+.container { width: 100%; max-width: 450px; padding: 20px; }
+
+.card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+/* --- THE FACE UI --- */
+.visualizer-container {
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.face {
+    width: 100px;
+    height: 100px;
+    background-color: var(--face-color, var(--c-neutral));
+    border-radius: 50%;
+    position: relative;
+    transition: all var(--transition-speed) cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    box-shadow: inset -5px -5px 20px rgba(0,0,0,0.1);
+}
+
+/* Eyes */
+.eyes {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    position: absolute;
+    top: 35%;
+    left: 20%;
+}
+
+.eye {
+    width: 12px;
+    height: 12px;
+    background: #2d3436;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+/* Mouth */
+.mouth {
+    width: 40px;
+    height: 20px;
+    border-radius: 0 0 20px 20px; /* Default Smile */
+    background: #2d3436;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+}
+
+/* Eyebrows (Hidden by default, shown in anger/concern) */
+.eyebrows {
+    width: 60%;
+    position: absolute;
+    top: 25%;
+    left: 20%;
+    display: flex;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.eyebrows span {
+    width: 20px;
+    height: 3px;
+    background: #2d3436;
+    display: block;
+    transition: transform 0.3s;
+}
+
+/* Sweat Drop (For nervous state) */
+.sweat {
+    position: absolute;
+    top: 20%;
+    right: -10px;
+    width: 10px;
+    height: 15px;
+    background: #74b9ff;
+    border-radius: 0 50% 50% 50%;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* --- EMOTION STATES --- */
+
+/* 1. Very Weak (Scared/Nervous) */
+.state-very-weak {
+    --face-color: var(--c-weak);
+    animation: shake 0.5s infinite;
+}
+.state-very-weak .mouth {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; /* 'O' mouth */
+}
+.state-very-weak .sweat { opacity: 1; }
+.state-very-weak .eye { height: 16px; width: 16px; } /* Wide eyes */
+
+/* 2. Weak (Sad/Concerned) */
+.state-weak { --face-color: var(--c-sad); }
+.state-weak .mouth {
+    border-radius: 20px 20px 0 0; /* Frown */
+    bottom: 15%;
+}
+.state-weak .eyebrows { opacity: 1; }
+.state-weak .eyebrows .left { transform: rotate(15deg); }
+.state-weak .eyebrows .right { transform: rotate(-15deg); }
+
+/* 3. Medium (Neutral/Thinking) */
+.state-medium { --face-color: var(--c-ok); }
+.state-medium .mouth {
+    height: 6px;
+    border-radius: 4px; /* Straight line */
+}
+.state-medium .eyebrows { opacity: 1; }
+.state-medium .eyebrows span { transform: rotate(0); }
+
+/* 4. Strong (Happy) */
+.state-strong { --face-color: var(--c-good); }
+.state-strong .mouth {
+    border-radius: 0 0 20px 20px; /* Smile */
+    width: 44px;
+}
+
+/* 5. Very Strong (Heroic/Excited) */
+.state-heroic {
+    --face-color: var(--c-strong);
+    animation: bounce 1s infinite alternate;
+}
+.state-heroic .mouth {
+    border-radius: 0 0 30px 30px;
+    height: 25px;
+    width: 50px;
+}
+.state-heroic .eye {
+    transform: scale(1.2); /* Big eyes/glasses effect potential */
+    clip-path: polygon(0 40%, 100% 40%, 100% 100%, 0% 100%); /* Squinty happy eyes */
+}
+
+/* --- TEXT & INPUT --- */
+.feedback-section { margin-bottom: 30px; }
+#emotion-title { margin-bottom: 5px; color: var(--text-main); transition: color 0.3s; }
+#emotion-desc { color: var(--text-sub); font-size: 0.95rem; }
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+input:focus { border-color: var(--text-sub); }
+
+#toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+}
+#toggle-password:hover { opacity: 1; }
+
+.tips-box {
+    text-align: left;
+    font-size: 0.85rem;
+    color: #e74c3c;
+    min-height: 20px;
+}
+.tip-item { display: block; margin-bottom: 4px; }
+
+/* --- ANIMATIONS --- */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px) rotate(-2deg); }
+    50% { transform: translateX(4px) rotate(2deg); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .card { padding: 30px 20px; }
+    .face { width: 80px; height: 80px; }
+}
