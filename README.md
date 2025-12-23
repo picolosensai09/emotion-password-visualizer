@@ -2,8 +2,6 @@
 
 A responsive, interactive password strength checker that uses **emotional feedback** instead of traditional progress bars. The interface features a custom-built CSS animated face that reacts in real-time to the complexity of the user's input.
 
-> **Live Demo:** [Insert Link Here (e.g., GitHub Pages)]  
-> *(If you haven't set up GitHub Pages yet, you can remove this line or add it later)*
 
 ## 💡 Core Concept
 Standard password checkers use boring green bars. This project aims to improve **User Experience (UX)** by humanizing the feedback loop.
